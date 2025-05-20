@@ -60,6 +60,12 @@ export const defaultProviderSettings = {
 		apiKey: '',
 		azureApiVersion: '2024-05-01-preview',
 	},
+	awsBedrock: {
+		apiKey: '',
+		region: 'us-east-1', // add region setting
+		endpoint: '', // optionally allow overriding default
+	},
+
 } as const
 
 
@@ -136,6 +142,7 @@ export const defaultModelsOfProvider = {
 	openAICompatible: [], // fallback
 	googleVertex: [],
 	microsoftAzure: [],
+	awsBedrock: [],
 	liteLLM: [],
 
 
@@ -1033,6 +1040,18 @@ const microsoftAzureSettings: VoidStaticProviderInfo = {
 	},
 }
 
+// ---------------- AWS BEDROCK ----------------
+const awsBedrockModelOptions = {
+} as const satisfies Record<string, VoidStaticModelInfo>
+
+const awsBedrockSettings: VoidStaticProviderInfo = {
+	modelOptions: awsBedrockModelOptions,
+	modelOptionsFallback: (modelName) => { return null },
+	providerReasoningIOSettings: {
+		input: { includeInPayload: openAICompatIncludeInPayloadReasoning },
+	},
+}
+
 
 // ---------------- VLLM, OLLAMA, OPENAICOMPAT (self-hosted / local) ----------------
 const ollamaModelOptions = {
@@ -1338,6 +1357,7 @@ const modelSettingsOfProvider: { [providerName in ProviderName]: VoidStaticProvi
 
 	googleVertex: googleVertexSettings,
 	microsoftAzure: microsoftAzureSettings,
+	awsBedrock: awsBedrockSettings,
 } as const
 
 
